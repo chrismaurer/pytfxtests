@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="urn:gateway-rules-schema" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="GatewayRules">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element maxOccurs="unbounded" name="Gateway">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="1" name="NativeOrders">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="Rule">
+                      <xs:complexType>
+                        <xs:sequence>
+
+                          <xs:element maxOccurs="1" name="SlicerTypes">
+                            <!--Valid Slicer Type values can be defined here-->
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="SlicerType">
+                                  <xs:complexType>
+                                    <xs:attribute name="value">
+                                      <xs:simpleType>
+                                        <xs:restriction base="xs:string">
+                                          <xs:enumeration value="None"/>
+                                          <xs:enumeration value="Iceberg"/>
+                                        </xs:restriction>
+                                      </xs:simpleType>
+                                    </xs:attribute>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+
+                          <xs:element maxOccurs="1" name="OrderTypes">
+                            <!--Valid Order Type values can be defined here-->
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="OrderType">
+                                  <xs:complexType>
+                                    <xs:attribute name="value">
+                                      <xs:simpleType>
+                                        <xs:restriction base="xs:string">
+                                          <xs:enumeration value="Limit"/>
+                                          <xs:enumeration value="Mkt"/>
+                                        </xs:restriction>
+                                      </xs:simpleType>
+                                    </xs:attribute>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+
+                          <xs:element maxOccurs="1" name="TriggerTypes">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="TriggerType">
+                                  <!--Valid Trigger Type values can be defined here-->
+                                  <xs:complexType>
+                                    <xs:attribute name="value">
+                                      <xs:simpleType>
+                                        <xs:restriction base="xs:string">
+                                          <xs:enumeration value="None"/>
+                                          <xs:enumeration value="Stop"/>
+                                          <xs:enumeration value="IfTouched"/>
+                                        </xs:restriction>
+                                      </xs:simpleType>
+                                    </xs:attribute>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+
+                          <xs:element maxOccurs="1" name="ProductTypes">
+                            <!--Valid Product Type values can be defined here-->
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="ProductType">
+                                  <xs:complexType>
+                                    <xs:attribute name="value">
+                                      <xs:simpleType>
+                                        <xs:restriction base="xs:string">
+                                          <xs:enumeration value="FUTURE"/>
+                                          <xs:enumeration value="SPREAD"/>
+                                          <xs:enumeration value="OPTION"/>
+                                          <xs:enumeration value="STRATEGY"/>
+                                          <xs:enumeration value="STOCK"/>
+                                          <xs:enumeration value="BOND"/>
+                                          <xs:enumeration value="SWAP"/>
+                                          <xs:enumeration value="WARRANT"/>
+                                          <xs:enumeration value="ENERGY"/>
+                                          <xs:enumeration value="FOREX"/>
+                                          <xs:enumeration value="NDF"/>
+                                          <xs:enumeration value="CFD"/>
+                                          <xs:enumeration value="INDEX"/>
+                                          <xs:enumeration value="EVERYTHING"/>
+                                        </xs:restriction>
+                                      </xs:simpleType>
+                                    </xs:attribute>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+
+                          <xs:element maxOccurs="1" minOccurs="0" name="Products">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="Product">
+                                  <xs:complexType>
+                                    <xs:attribute name="value" type="xs:string" use="required"/>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+
+                        </xs:sequence>
+                        <xs:attribute name="name" type="xs:string" use="required" />
+                        <xs:attribute name="enabled" type="xs:boolean" use="required" />
+                        <xs:attribute name="ExclusionRule" type="xs:boolean" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element maxOccurs="1" name="SupportedFeatures">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="1" name="OrderModCodes">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="unbounded" name="OrderModCode">
+                            <xs:complexType>
+                              <xs:attribute name="value">
+                                <xs:simpleType>
+                                  <xs:restriction base="xs:string">
+                                    <xs:enumeration value="Away Market"/>
+                                    <xs:enumeration value="Market To Limit"/>
+                                    <xs:enumeration value="Short Exempt"/>
+                                    <xs:enumeration value="If Touched"/>
+                                    <xs:enumeration value="Auction"/>
+                                    <xs:enumeration value="Stop"/>
+                                    <xs:enumeration value="Timed"/>
+                                    <xs:enumeration value="Non-leave"/>
+                                    <xs:enumeration value="Passive"/>
+                                    <xs:enumeration value="Best Only"/>
+                                    <xs:enumeration value="Auto-agress"/>
+                                    <xs:enumeration value="TSTOP"/>
+                                    <xs:enumeration value="Limit Market To Limit"/>
+                                    <xs:enumeration value="TTRelay-Origin"/>
+                                  </xs:restriction>
+                                </xs:simpleType>
+                              </xs:attribute>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element maxOccurs="1" name="OrderRestrictions">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="unbounded" name="OrderRestriction">
+                            <xs:complexType>
+                              <xs:attribute name="value">
+                                <xs:simpleType>
+                                  <xs:restriction base="xs:string">
+                                    <xs:enumeration value="None"/>
+                                    <xs:enumeration value="Block"/>
+                                    <xs:enumeration value="Iceberg"/>
+                                    <xs:enumeration value="FOK"/>
+                                    <xs:enumeration value="Growler"/>
+                                    <xs:enumeration value="FAS"/>
+                                    <xs:enumeration value="IOC"/>
+                                    <xs:enumeration value="MOC"/>
+                                    <xs:enumeration value="AON"/>
+                                    <xs:enumeration value="MOO"/>
+                                    <xs:enumeration value="MV"/>
+                                    <xs:enumeration value="Flex"/>
+                                    <xs:enumeration value="Volatility"/>
+                                    <xs:enumeration value="Basis"/>
+                                    <xs:enumeration value="LOO"/>
+                                    <xs:enumeration value="LOC"/>
+                                    <xs:enumeration value="LTM"/>
+                                    <xs:enumeration value="LWMOL"/>
+                                    <xs:enumeration value="LSM"/>
+                                    <xs:enumeration value="AA"/>
+                                    <xs:enumeration value="EM"/>
+                                    <xs:enumeration value="EFS"/>
+                                    <xs:enumeration value="EFP"/>
+                                    <xs:enumeration value="GC"/>
+                                    <xs:enumeration value="Prof"/>
+                                    <xs:enumeration value="AL"/>
+                                  </xs:restriction>
+                                </xs:simpleType>
+                              </xs:attribute>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element maxOccurs="1" name="OrderTypes">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="unbounded" name="OrderType">
+                            <xs:complexType>
+                              <xs:attribute name="value">
+                                <xs:simpleType>
+                                  <xs:restriction base="xs:string">
+                                    <xs:enumeration value="Void"/>
+                                    <xs:enumeration value="OCO"/>
+                                    <xs:enumeration value="CMO"/>
+                                    <xs:enumeration value="Limit"/>
+                                    <xs:enumeration value="Mkt"/>
+                                    <xs:enumeration value="BatchOrder"/>
+                                    <xs:enumeration value="Quote"/>
+                                    <xs:enumeration value="BL"/>
+                                    <xs:enumeration value="MTL"/>
+                                    <xs:enumeration value="Cross"/>
+                                  </xs:restriction>
+                                </xs:simpleType>
+                              </xs:attribute>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element maxOccurs="1" name="TIFTypes">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="unbounded" name="TIFType">
+                            <xs:complexType>
+                              <xs:attribute name="value">
+                                <xs:simpleType>
+                                  <xs:restriction base="xs:string">
+                                    <xs:enumeration value="None" />
+                                    <xs:enumeration value="GTD" />
+                                    <xs:enumeration value="GTC" />
+                                    <xs:enumeration value="GIS" />
+                                    <xs:enumeration value="GTDate" />
+                                  </xs:restriction>
+                                </xs:simpleType>
+                              </xs:attribute>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+
+                    <xs:element maxOccurs="1" name="OpenCloseCodes">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="unbounded" name="OpenCloseCode">
+                            <xs:complexType>
+                              <xs:attribute name="value">
+                                <xs:simpleType>
+                                  <xs:restriction base="xs:string">
+                                    <xs:enumeration value="XRisk Admin"/>
+                                    <xs:enumeration value="Close"/>
+                                    <xs:enumeration value="Fill SOD"/>
+                                    <xs:enumeration value="FIFO"/>
+                                    <xs:enumeration value="Manual"/>
+                                    <xs:enumeration value="Open"/>
+                                    <xs:enumeration value="Rollover"/>
+                                    <xs:enumeration value="SOD"/>
+                                    <xs:enumeration value="Open/Close"/>
+                                    <xs:enumeration value="Close/Open"/>
+                                  </xs:restriction>
+                                </xs:simpleType>
+                              </xs:attribute>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:ID" use="required" />
+          </xs:complexType>
+        </xs:element>
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++  -->
+        <!-- ++++++++++++++++++++++++++++++++++++++++  -->
+        <!-- ++++++++++++++++++++++++++++++++++++++++  -->
+        <!-- ++++++++++++++++++++++++++++++++++++++++  -->
+
+        <xs:element maxOccurs="unbounded" name="Market">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="1" name="NativeOrders">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="Rule">
+                      <xs:complexType>
+                        <xs:sequence>
+
+                          <xs:element maxOccurs="1" name="SlicerTypes">
+                            <!--Valid Slicer Type values can be defined here-->
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="SlicerType">
+                                  <xs:complexType>
+                                    <xs:attribute name="value">
+                                      <xs:simpleType>
+                                        <xs:restriction base="xs:string">
+                                          <xs:enumeration value="None"/>
+                                          <xs:enumeration value="Iceberg"/>
+                                        </xs:restriction>
+                                      </xs:simpleType>
+                                    </xs:attribute>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+
+                          <xs:element maxOccurs="1" name="OrderTypes">
+                            <!--Valid Order Type values can be defined here-->
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="OrderType">
+                                  <xs:complexType>
+                                    <xs:attribute name="value">
+                                      <xs:simpleType>
+                                        <xs:restriction base="xs:string">
+                                          <xs:enumeration value="Limit"/>
+                                          <xs:enumeration value="Mkt"/>
+                                        </xs:restriction>
+                                      </xs:simpleType>
+                                    </xs:attribute>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+
+                          <xs:element maxOccurs="1" name="TriggerTypes">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="TriggerType">
+                                  <!--Valid Trigger Type values can be defined here-->
+                                  <xs:complexType>
+                                    <xs:attribute name="value">
+                                      <xs:simpleType>
+                                        <xs:restriction base="xs:string">
+                                          <xs:enumeration value="None"/>
+                                          <xs:enumeration value="Stop"/>
+                                          <xs:enumeration value="IfTouched"/>
+                                        </xs:restriction>
+                                      </xs:simpleType>
+                                    </xs:attribute>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+
+                          <xs:element maxOccurs="1" name="ProductTypes">
+                            <!--Valid Product Type values can be defined here-->
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="ProductType">
+                                  <xs:complexType>
+                                    <xs:attribute name="value">
+                                      <xs:simpleType>
+                                        <xs:restriction base="xs:string">
+                                          <xs:enumeration value="FUTURE"/>
+                                          <xs:enumeration value="SPREAD"/>
+                                          <xs:enumeration value="OPTION"/>
+                                          <xs:enumeration value="STRATEGY"/>
+                                          <xs:enumeration value="STOCK"/>
+                                          <xs:enumeration value="BOND"/>
+                                          <xs:enumeration value="SWAP"/>
+                                          <xs:enumeration value="WARRANT"/>
+                                          <xs:enumeration value="ENERGY"/>
+                                          <xs:enumeration value="FOREX"/>
+                                          <xs:enumeration value="NDF"/>
+                                          <xs:enumeration value="CFD"/>
+                                          <xs:enumeration value="INDEX"/>
+                                          <xs:enumeration value="EVERYTHING"/>
+                                        </xs:restriction>
+                                      </xs:simpleType>
+                                    </xs:attribute>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+
+                          <xs:element maxOccurs="1" minOccurs="0" name="Products">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="Product">
+                                  <xs:complexType>
+                                    <xs:attribute name="value" type="xs:string" use="required"/>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+
+                        </xs:sequence>
+                        <xs:attribute name="name" type="xs:string" use="required" />
+                        <xs:attribute name="enabled" type="xs:boolean" use="required" />
+                        <xs:attribute name="ExclusionRule" type="xs:boolean" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element maxOccurs="1" name="SupportedFeatures">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="1" name="OrderModCodes">
+                      <xs:complexType>
+                 
+                    <xs:element maxOccurs="1" name="OrderRestrictions">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="unbounded" name="OrderRestriction">
+                            <xs:complexType>
+                              <xs:attribute name="value">
+                                <xs:simpleType>
+                                  <xs:restriction base="xs:string">
+                                    <xs:enumeration value="None"/>
+                                    <xs:enumeration value="Block"/>
+                                    <xs:enumeration value="Iceberg"/>
+                                    <xs:enumeration value="FOK"/>
+                                    <xs:enumeration value="Growler"/>
+                                    <xs:enumeration value="FAS"/>
+                                    <xs:enumeration value="IOC"/>
+                                    <xs:enumeration value="MOC"/>
+                                    <xs:enumeration value="AON"/>
+                                    <xs:enumeration value="MOO"/>
+                                    <xs:enumeration value="MV"/>
+                                    <xs:enumeration value="Flex"/>
+                                    <xs:enumeration value="Volatility"/>
+                                    <xs:enumeration value="Basis"/>
+                                    <xs:enumeration value="LOO"/>
+                                    <xs:enumeration value="LOC"/>
+                                    <xs:enumeration value="LTM"/>
+                                    <xs:enumeration value="LWMOL"/>
+                                    <xs:enumeration value="LSM"/>
+                                    <xs:enumeration value="AA"/>
+                                    <xs:enumeration value="EM"/>
+                                    <xs:enumeration value="EFS"/>
+                                    <xs:enumeration value="EFP"/>
+                                    <xs:enumeration value="GC"/>
+                                    <xs:enumeration value="Prof"/>
+                                    <xs:enumeration value="AL"/>
+                                  </xs:restriction>
+                                </xs:simpleType>
+                              </xs:attribute>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element maxOccurs="1" name="OrderTypes">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="unbounded" name="OrderType">
+                            <xs:complexType>
+                              <xs:attribute name="value">
+                                <xs:simpleType>
+                                  <xs:restriction base="xs:string">
+                                    <xs:enumeration value="Void"/>
+                                    <xs:enumeration value="OCO"/>
+                                    <xs:enumeration value="CMO"/>
+                                    <xs:enumeration value="Limit"/>
+                                    <xs:enumeration value="Mkt"/>
+                                    <xs:enumeration value="BatchOrder"/>
+                                    <xs:enumeration value="Quote"/>
+                                    <xs:enumeration value="BL"/>
+                                    <xs:enumeration value="MTL"/>
+                                    <xs:enumeration value="Cross"/>
+                                  </xs:restriction>
+                                </xs:simpleType>
+                              </xs:attribute>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element maxOccurs="1" name="TIFTypes">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="unbounded" name="TIFType">
+                            <xs:complexType>
+                              <xs:attribute name="value">
+                                <xs:simpleType>
+                                  <xs:restriction base="xs:string">
+                                    <xs:enumeration value="None" />
+                                    <xs:enumeration value="GTD" />
+                                    <xs:enumeration value="GTC" />
+                                    <xs:enumeration value="GIS" />
+                                    <xs:enumeration value="GTDate" />
+                                  </xs:restriction>
+                                </xs:simpleType>
+                              </xs:attribute>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+ 
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>                    
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:ID" use="required" />
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+      <xs:attribute name="SchemaName" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
