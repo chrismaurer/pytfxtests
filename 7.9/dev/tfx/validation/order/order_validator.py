@@ -6,7 +6,7 @@ from basis_validation.order import roundtrip
 
 import roundtrip_rules as tfx_order_roundtrip
 import conditions as tfx_order_conditions
-#from tfx.validation.order.conditions import *
+from tfx.validation.order.conditions import *
 
 __all__ = ['setup_order']
 
@@ -60,9 +60,11 @@ def setup_order(order_table):
     #####################
     # ## Date and Time ##
     #####################
-    if srvr_vrmf.version == 7 and srvr_vrmf.release == 17 and srvr_vrmf.modification < 7:
-        date_and_time_table.add_rule(time_exch_is_tfx_exchange_time, cond='False')
-        date_and_time_table.optout_rule('time_exch_is_exchange_time','is_order_sent_to_exchange and does_exchange_send_timestamp', 'time_exch_is_tfx_exchange_time','exch does not send it ')
+    date_and_time_table.add_rule(tfx_order_roundtrip.time_exch_is_tfx_exchange_time, cond='False')
+    date_and_time_table.optout_rule(name='time_exch_is_exchange_time',
+                                    cond='is_order_sent_to_exchange and does_exchange_send_timestamp',
+                                    new_rule='time_exch_is_tfx_exchange_time',
+                                    note='Exch does not send time in this case')
 
     ##################
     # ##    Ids     ##

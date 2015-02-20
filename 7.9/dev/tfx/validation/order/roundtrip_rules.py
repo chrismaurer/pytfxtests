@@ -26,8 +26,8 @@ __all__ = []  # populated at the bottom of this module
 ###################
 # Date & Time Rules
 ###################
-def time_exch_is_tfx_exchange_time(action, before, after, tzone_offset=9, time_threshold=300):
-    time_exch_is_exchange_time(action, before, after, tzone_offset, time_threshold)
+def time_exch_is_tfx_exchange_time(action, before, after, time_threshold=360):
+    time_exch_is_exchange_time(action, before, after, time_threshold=time_threshold)
     
 ###################
 # Trader Info Rules
