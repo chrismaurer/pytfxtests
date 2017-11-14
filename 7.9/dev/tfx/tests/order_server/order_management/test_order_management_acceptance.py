@@ -11,7 +11,7 @@ from commontests.order_server.order_management.suites import OrderManagementAcce
 from tfx.tests.order_alterations import *
 from tfx.tests.features import gateway
 
-acceptance_suite_gen = OrderManagementAcceptanceSuiteGenerator(gateway, group_scenario_percentage=50,
-                                                               primary_workers=[Worker.PROXY_DIRECT],
-                                                               suite_include_patterns=[re.compile('Future')])
+acceptance_suite_gen = OrderManagementAcceptanceSuiteGenerator(gateway, group_scenario_percentage=40,
+                                                               primary_workers=[Worker.PROXY_DIRECT])#,
+#                                                               suite_include_patterns=[re.compile('Future', 'Spread', 'Option')])
 acceptance_suite_gen(sys.modules[__name__])

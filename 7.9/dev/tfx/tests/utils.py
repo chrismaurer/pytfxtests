@@ -1,5 +1,6 @@
 # Python Imports
 from operator import eq
+from ttutil import in_
 #import os
 import re
 import datetime
@@ -13,7 +14,7 @@ from ttapi import aenums
 from pyrate.ttapi.trader import TTAPITrader
 
 #from pyrate.manager import Manager
-from pyrate.marketfinder import MarketFinderConfigData
+from pyrate.marketfinder import MarketFilter, MarketFinderConfigData
 
 from captain import bind
 from captain.lib import Override, PriceQuantityChange, SetOrderAttrs, TickRel
@@ -26,6 +27,7 @@ from captain.controlled import (controlled_name_type, ControlledName)
 from captain.lib.strategy import StrategyLeg, strike_equal_value_minus_diff
 from pyrate.ttapi.predicates import ProductComparison, ContractComparison
 from ttutil import PositiveIntegerBounds, in_, not_in_
+from ttutil.inspect import generate_signature
 
 #CommonTests Imports
 from commontests.utils import Small_Price_Qty_Chg_Predicate
@@ -64,7 +66,7 @@ bounds_20_50 = PositiveIntegerBounds(20,50)
 mf_config = MarketFinderConfigData()
 mf_config.timeout = 500
 mf_config.depth = 5
-mf_config.maxTriesPerProduct = 22
+mf_config.maxTriesPerProduct = 250
 mf_config.useCache = True
 mf_config.defaultBestPrice = 99.0000
 mf_config.useDefaultBestPriceFirst = True
@@ -81,26 +83,36 @@ mf_config.acceptable_reject_messages = ['No qty filled or placed in order book; 
                                         'EX: transaction aborted (Order-book volume was too low to fill order.)']
 
 mf_option_config = deepcopy(mf_config)
-mf_option_config.maxTriesPerProduct = 120
+mf_option_config.maxTriesPerProduct = 250
 mf_option_config.useDefaultBestPriceFirst = True
 mf_option_config.defaultBestPrice = 0.200
 
 mf_multi_leg_config = deepcopy(mf_config)
-mf_multi_leg_config.maxTriesPerProduct = 80
+mf_multi_leg_config.maxTriesPerProduct = 250
 mf_multi_leg_config.useDefaultBestPriceFirst = True
 mf_multi_leg_config.defaultBestPrice = 0.600
+mf_multi_leg_config.requireEmptyMarket = True
+mf_multi_leg_config.preferBackMonth = True
 mf_multi_leg_config.ignoreLegs = True
 
-ProductGroup.FUTURE.register(['EY', 'ON'])
-ProductGroup.FSPREAD.register(['EY', 'ON'])
-ProductGroup.OPTION.register(['EYO'])
+pred = ProductComparison((('prod_chr', in_, ['EY', ]),))
+option_pred = ProductComparison((('prod_chr', in_, ['EYO', ]),))
+ProductType.FUTURE.register(ProductType.FUTURE.value + pred)
+ProductType.FSPREAD.register(ProductType.FSPREAD.value + pred)
+ProductType.OPTION.register(ProductType.OPTION.value + option_pred)
+
+ProductGroup.FUTURE.register(['EY', ])
+ProductGroup.FSPREAD.register(['EY', ])
+ProductGroup.OPTION.register(['EYO', ])
+
+pack_filter = ContractComparison([('comb_code', eq, aenums.TT_PACK_COMB_ID)])
 
 futures_filter = [ProductType.FUTURE, ContractFilter.TRADABLE, ProductGroup.FUTURE]
-fspread_filter = [ProductType.FSPREAD, ContractFilter.TRADABLE, ProductGroup.FSPREAD]
+fspread_filter = [ProductType.FSPREAD, ContractFilter.TRADABLE,ProductGroup.FSPREAD]#, pack_filter]
 option_filter = [ProductType.OPTION, ContractFilter.TRADABLE, ProductGroup.OPTION]
 outrights = [ProductType.OUTRIGHT, ContractFilter.TRADABLE]
-intra_prod_mleg = [ProductType.INTRA_PROD_MULTI_LEG, ContractFilter.TRADABLE]
-inter_prod_mleg = [ProductType.INTER_PROD_MULTI_LEG, ContractFilter.TRADABLE]
+#intra_prod_mleg = [ProductType.INTRA_PROD_MULTI_LEG, ContractFilter.TRADABLE]
+#inter_prod_mleg = [ProductType.INTER_PROD_MULTI_LEG, ContractFilter.TRADABLE]
 spread_prod_type_implied_two_legged = [ProductType.FSPREAD, ContractFilter.TRADABLE,
                                        ContractFilter.CALENDAR]
 #####################################################################################

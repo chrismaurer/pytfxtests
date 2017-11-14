@@ -86,6 +86,6 @@ class TFXChangeIncreaseQty(object):
     def signature(self):
         return str(self)
 
-TFXOverrides.append(Override(TFXSetCurrentLastPrices))
-TFXOverrides.append(Override(ChangeAsCancelReplace, TFXChangeIncreaseQty()))
+#TFXOverrides.append(Override(TFXSetCurrentLastPrices))
+#TFXOverrides.append(Override(ChangeAsCancelReplace, TFXChangeIncreaseQty()))
 TFXOverrides.append(Override(WaitForLastPricesOnTradeDataUpdateNoDuplicateCallbackCheck))

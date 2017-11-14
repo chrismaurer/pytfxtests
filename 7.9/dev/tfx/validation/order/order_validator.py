@@ -31,6 +31,7 @@ def setup_order(order_table):
     misc_table = order_table.get_rule('roundtrip').get_rule('misc')
     prices_table = order_table.get_rule('roundtrip').get_rule('prices')
     trader_info_table = order_table.get_rule('roundtrip').get_rule('trader_info')
+    quantities_table = order_table.get_rule('roundtrip').get_rule('quantities')
 
     ##################
     # ## Conditions ##
@@ -121,3 +122,10 @@ def setup_order(order_table):
     ###################
     # origin
     trader_info_table.add_rule(basis_order_roundtrip.origin_is_empty, cond='not is_order_status_reject')
+
+    ###################
+    # ## Quantities  ##
+    ###################
+
+    quantities_table.override_rule('intended_qty_is_order_qty', 'is_order_action_change and is_order_action_orig_void',
+                                   -1, note= 'This rule was incorrectly running for chg_hold_del')

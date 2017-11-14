@@ -28,8 +28,8 @@ gateway[OrderType.BEST_LIMIT] = UNSUPPORTED
 # OrderRes Support
 ##############################################################################
 gateway[OrderRes.NONE] = SUPPORTED
-gateway[OrderRes.MOO] = SUPPORTED
 
+gateway[OrderRes.MOO] = UNSUPPORTED
 gateway[OrderRes.FOK] = UNSUPPORTED
 gateway[OrderRes.IOC] = UNSUPPORTED
 gateway[OrderRes.LOC] = UNSUPPORTED
@@ -47,8 +47,8 @@ gateway[OrderRes.VOLA] = UNSUPPORTED
 # OrderMod Support
 ##############################################################################
 gateway[OrderMod.NONE] = SUPPORTED
-gateway[OrderMod.STOP] = SUPPORTED
 
+gateway[OrderMod.STOP] = UNSUPPORTED
 gateway[OrderMod.BEST_ONLY] = UNSUPPORTED
 gateway[OrderMod.AUTO_AGRESS] = UNSUPPORTED
 gateway[OrderMod.IF_TOUCHED] = UNSUPPORTED
@@ -85,6 +85,7 @@ gateway[ProductType.STOCK] = UNSUPPORTED
 gateway.unsupported.insert_combo(OrderType.MARKET, Tif.GTC)
 gateway.unsupported.insert_combo(OrderType.MARKET, Tif.GTDATE)
 gateway.unsupported.insert_combo(OrderType.MARKET, Tif.GIS)
+gateway.unsupported.insert_combo(ProductType.FSPREAD, OrderRes.MOO)
 gateway.unsupported.insert_combo(OrderRes.IOC, Tif.GTC)
 gateway.unsupported.insert_combo(OrderRes.FOK, Tif.GTC)
 gateway.unsupported.insert_combo(OrderRes.LOO, OrderMod.IF_TOUCHED)
@@ -146,6 +147,8 @@ def get_market_finder_config(order_info):
     mf_config.useCache = True
     mf_config.fixLotQty = False
     mf_config.can_get_add_udel_for_rej = True
+    mf_config.preferBackMonth = True
+    mf_config.requireEmptyMarket = True
     mf_config.failPatterns = (re.compile('.*Illegal transaction at this time.*'),
                               re.compile('.*not valid for this instrument type.*'),
                               re.compile('.*Given time validity is not allowed.*'),
@@ -157,7 +160,7 @@ def get_market_finder_config(order_info):
                                             'EX: transaction aborted (Order-book volume was too low to fill order.)']
 
     if order_info.prod_type == ProductType.FUTURE:
-        mf_config.maxTriesPerProduct = 22
+        mf_config.maxTriesPerProduct = 250
         mf_config.useDefaultBestPriceFirst = True
         mf_config.defaultBestPrice = 98.0000
         return mf_config
@@ -169,7 +172,7 @@ def get_market_finder_config(order_info):
     if order_info.prod_type == ProductType.FSPREAD or \
     order_info.prod_type == ProductType.OSTRATEGY or \
     order_info.prod_type == ProductType.MULTI_LEG:
-        mf_config.maxTriesPerProduct = 80
+        mf_config.maxTriesPerProduct = 250
         mf_config.useDefaultBestPriceFirst = True
         mf_config.defaultBestPrice = 0.600
         mf_config.ignoreLegs = True
@@ -188,6 +191,9 @@ def get_market_finder_config(order_info):
         return mf_config
     else:
         return mf_config
+
+    ProductGroup.FUTURE.register(['EY', ])
+    ProductGroup.FSPREAD.register(['EY', ])
 
 def get_market_finder_order_info(order_info):
     limit = OrderInfo(Worker.DIRECT, OrderType.LIMIT, OrderRes.NONE, OrderMod.NONE,
